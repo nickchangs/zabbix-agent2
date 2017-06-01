@@ -31,4 +31,4 @@ chmod +x /etc/zabbix/*.sh
 #echo "UserParameter=access.status[*],/etc/zabbix/access_status.sh \$1" >> /etc/zabbix/zabbix_agentd.conf
 echo Hostname=$NewName >> /etc/zabbix/zabbix_agentd.conf
 systemctl enable zabbix-agent
-service zabbix-agent restart               
+service zabbix-agent restart
