@@ -1,4 +1,4 @@
 UserParameter=nginx.status[*],(/etc/zabbix/ngx_status.sh $1)
 UserParameter=netstat.stat[*],(netstat -ant |grep -i $1|wc -l)
-UserParameter=access.status[*],(/etc/zabbix/access_status.sh $1)
+UserParameter=access.status[*],(/etc/zabbix/access_status.sh $1 $2)
 UserParameter=nginx.upstream[*],(curl -s -o /dev/null -I -w "%{http_code}" "$1")
