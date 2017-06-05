@@ -9,3 +9,4 @@ echo "TLSPSKFile=/etc/zabbix/zabbix_agentd.psk" >> /etc/zabbix/zabbix_agentd.con
 echo "TLSPSKIdentity=PSK 001" >> /etc/zabbix/zabbix_agentd.conf 
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/zabbix_agentd.psk -o "/etc/zabbix/zabbix_agentd.psk"  
 service zabbix-agent restart 
+最後進入zabbix ui內，選config ==> host ==> 選一個品牌的group ==>全選 ==> MASS UPDATE ==> 選加密 (encr…) ==>全選psk ==> PSK 001 ==> zabbix_agentd.psk裡面的key
