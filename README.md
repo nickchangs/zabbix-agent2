@@ -22,6 +22,9 @@ https://www.zabbix.com/documentation/3.2/manual/encryption/using_pre_shared_keys
 1.3 新增Zabbix Agent Userparameter
 
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_ip.conf -o "/etc/zabbix/zabbix_agentd.d/userparameter_ip.conf"
+
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/connections.sh -o "/etc/zabbix/connections.sh"
+
 service zabbix-agent restart
+
 於Templete OS Linux Active 新增item 及 trigger
