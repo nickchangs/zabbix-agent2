@@ -3,8 +3,8 @@ read -p "Input hostname you want to change : " NewName
 
 rm -rf /etc/zabbix/*.sh*
 rm -rf /etc/zabbix/*.conf*
-rm -rf /etc/zabbix/zabbix_agentd.d/*
-yum install net-tools bind-utils wget -y
+rm -rf /etc/zabbix/zabbix_agentd.d/*.conf
+yum install net-tools bind-utils wget nc -y
 rpm -Uvh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-agent-3.2.6-1.el7.x86_64.rpm
 chkconfig zabbix-agent on
 
