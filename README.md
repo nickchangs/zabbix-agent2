@@ -28,3 +28,11 @@ curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/connec
 service zabbix-agent restart
 
 於Templete OS Linux Active 新增item 及 trigger
+
+1.4 將連線數及netstat狀態數送給splunk
+
+curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/splunk_access.sh -o "/etc/zabbix/splunk_access.sh"
+
+yum install -y nc
+
+echo "* * * * * sh /etc/zabbix/splunk_access.sh" > /var/spool/cron/root
