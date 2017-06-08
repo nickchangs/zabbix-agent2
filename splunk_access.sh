@@ -12,7 +12,7 @@ Total=`ls /opt/logs/nginx/*.access.log | wc -l`
         for (( i=1 ; i<=$Total ; i=i+1 ))
         do
                 LogFile=`ls /opt/logs/nginx/*.access.log | head -n $i | tail -n 1`
-                cat $LogFile | grep $TimeRange | awk '{print $3}' > /tmp/AccessIPList
+                cat $LogFile | grep $TimeRange | awk '{print $3}' >> /tmp/AccessIPList
         done
 var_ip=`cat /tmp/AccessIPList | sort | uniq -c | sort -n | wc -l`
 var_list=`netstat -ant |grep -i LISTEN|wc -l`
