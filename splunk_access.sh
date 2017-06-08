@@ -20,11 +20,14 @@ var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
 var_SYN_RECV=`netstat -ant |grep -i SYN_RECV|wc -l`
 var_SYN_SENT=`netstat -ant |grep -i SYN_SENT|wc -l`
 var_TIME_WAIT=`netstat -ant |grep -i TIME_WAIT|wc -l`
+#var_CLOSE_WAIT=`netstat -ant |grep -i CLOSE_WAIT|wc -l`
+#var_established=`netstat -ant |grep -i established|wc -l`
+#var_FIN_WAIT1=`netstat -ant |grep -i FIN_WAIT1|wc -l`
 echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
 rm -rf /tmp/AccessIPList
 }
 
-function be_AccessIP()  {
+function BE_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*-https.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
         var_list=`netstat -ant |grep -i LISTEN|wc -l`
         var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
@@ -34,7 +37,7 @@ function be_AccessIP()  {
         echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
         }
 
-function fd_AccessIP()  {
+function FE_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
         var_list=`netstat -ant |grep -i LISTEN|wc -l`
         var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
@@ -44,7 +47,7 @@ function fd_AccessIP()  {
         echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
         }
 
-function py_AccessIP()  {
+function PAY_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
         var_list=`netstat -ant |grep -i LISTEN|wc -l`
         var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
