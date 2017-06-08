@@ -27,15 +27,15 @@ cat /tmp/AccessIPList | sort | uniq -c | sort -n | wc -l
 rm -rf /tmp/AccessIPList
 }
 
-function be_AccessIP()  {
+function BE_AccessIP()  {
         cat /opt/logs/nginx/*-https.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l
 }
 
-function fd_AccessIP()  {
+function FE_AccessIP()  {
         cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l
 }
 
-function py_AccessIP()  {
+function PAY_AccessIP()  {
         cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l
 }
 $Envir"_AccessIP"
