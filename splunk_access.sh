@@ -1,5 +1,9 @@
 #!/bin/bash
-#這個script是用來計算四個服務的access IP,可下參數M或m來查詢前一分鐘的資料;可下參數H或h來查詢前一小時的資料;沒有參數的話則是查詢一整天的資料
+#這個script是用來計算四個服務的access IP和netstat的狀態，並丟到SPLUNK分析
+#此程式服務器必需安裝NC及net-tools，HOSTNAME是抓zabbix-agent.conf裡面的資訊
+#AccessIPList寫到/TMP/裡後，只有APP會加總進行統計後抓出CLIENT IP數量
+#先將各NETSTAT抓一次到/TMP/裡面，再用語法抓出來各資訊
+#請確認目前log file的大小，一定要logrotate有在執行，只存1天的LOG，其他是被壓縮起來的，不會會造成DISK I/O問題
 
 TimeRange=`date -d '1 minute ago' '+%d/%b/%Y:%H:%M'`
 
