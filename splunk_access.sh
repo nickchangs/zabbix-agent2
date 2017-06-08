@@ -9,6 +9,7 @@ TimeRange=`date -d '1 minute ago' '+%d/%b/%Y:%H:%M'`
 
 Envir=`cat /etc/zabbix/zabbix_agentd.conf | grep Hostname= | grep -v "#" | awk 'BEGIN {FS="_"}{print $2}'`
 Hostname=`cat /etc/zabbix/zabbix_agentd.conf | grep Hostname= | grep -v "#"`
+netstat_log=`netstat -nat |awk '{print $6}'|sort|uniq -c|sort -rn > /tmp/netstatlog`
 
 function APP_AccessIP() {
 Total=`ls /opt/logs/nginx/*.access.log | wc -l`
@@ -19,45 +20,62 @@ Total=`ls /opt/logs/nginx/*.access.log | wc -l`
                 cat $LogFile | grep $TimeRange | awk '{print $3}' >> /tmp/AccessIPList
         done
 var_ip=`cat /tmp/AccessIPList | sort | uniq -c | sort -n | wc -l`
-var_list=`netstat -ant |grep -i LISTEN|wc -l`
-var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
-var_SYN_RECV=`netstat -ant |grep -i SYN_RECV|wc -l`
-var_SYN_SENT=`netstat -ant |grep -i SYN_SENT|wc -l`
-var_TIME_WAIT=`netstat -ant |grep -i TIME_WAIT|wc -l`
-#var_CLOSE_WAIT=`netstat -ant |grep -i CLOSE_WAIT|wc -l`
-#var_established=`netstat -ant |grep -i established|wc -l`
-#var_FIN_WAIT1=`netstat -ant |grep -i FIN_WAIT1|wc -l`
-echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
+var_list=`cat $netstat_log |grep -i LISTEN|wc -l`
+var_ESTABLISHED=`cat $netstat_log |grep -i ESTABLISHED|wc -l`
+var_SYN_RECV=`cat $netstat_log |grep -i SYN_RECV|wc -l`
+var_SYN_SENT=`cat $netstat_log |grep -i SYN_SENT|wc -l`
+var_TIME_WAIT=`cat $netstat_log |grep -i TIME_WAIT|wc -l`
+var_CLOSE_WAIT=`cat $netstat_log |grep -i CLOSE_WAIT|wc -l`
+var_FIN_WAIT1=`cat $netstat_log |grep -i FIN_WAIT1|wc -l`
+var_FIN_WAIT2=`cat $netstat_log |grep -i FIN_WAIT2|wc -l`
+var_CLOSING=`cat $netstat_log |grep -i CLOSING|wc -l`
+var_Foreign=`cat $netstat_log |grep -i Foreign|wc -l`
+echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT",CLOSE_WAIT=$var_CLOSE_WAIT",FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2",CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
 rm -rf /tmp/AccessIPList
 }
 
 function BE_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*-https.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
-        var_list=`netstat -ant |grep -i LISTEN|wc -l`
-        var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
-        var_SYN_RECV=`netstat -ant |grep -i SYN_RECV|wc -l`
-        var_SYN_SENT=`netstat -ant |grep -i SYN_SENT|wc -l`
-        var_TIME_WAIT=`netstat -ant |grep -i TIME_WAIT|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
+        var_list=`cat $netstat_log |grep -i LISTEN|wc -l`
+        var_ESTABLISHED=`cat $netstat_log |grep -i ESTABLISHED|wc -l`
+        var_SYN_RECV=`cat $netstat_log |grep -i SYN_RECV|wc -l`
+        var_SYN_SENT=`cat $netstat_log |grep -i SYN_SENT|wc -l`
+        var_TIME_WAIT=`cat $netstat_log |grep -i TIME_WAIT|wc -l`
+        var_CLOSE_WAIT=`cat $netstat_log |grep -i CLOSE_WAIT|wc -l`
+        var_FIN_WAIT1=`cat $netstat_log |grep -i FIN_WAIT1|wc -l`
+        var_FIN_WAIT2=`cat $netstat_log |grep -i FIN_WAIT2|wc -l`
+        var_CLOSING=`cat $netstat_log |grep -i CLOSING|wc -l`
+        var_Foreign=`cat $netstat_log |grep -i Foreign|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT",CLOSE_WAIT=$var_CLOSE_WAIT",FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2",CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 
 function FE_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
-        var_list=`netstat -ant |grep -i LISTEN|wc -l`
-        var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
-        var_SYN_RECV=`netstat -ant |grep -i SYN_RECV|wc -l`
-        var_SYN_SENT=`netstat -ant |grep -i SYN_SENT|wc -l`
-        var_TIME_WAIT=`netstat -ant |grep -i TIME_WAIT|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
+        var_list=`cat $netstat_log |grep -i LISTEN|wc -l`
+        var_ESTABLISHED=`cat $netstat_log |grep -i ESTABLISHED|wc -l`
+        var_SYN_RECV=`cat $netstat_log |grep -i SYN_RECV|wc -l`
+        var_SYN_SENT=`cat $netstat_log |grep -i SYN_SENT|wc -l`
+        var_TIME_WAIT=`cat $netstat_log |grep -i TIME_WAIT|wc -l`
+        var_CLOSE_WAIT=`cat $netstat_log |grep -i CLOSE_WAIT|wc -l`
+        var_FIN_WAIT1=`cat $netstat_log |grep -i FIN_WAIT1|wc -l`
+        var_FIN_WAIT2=`cat $netstat_log |grep -i FIN_WAIT2|wc -l`
+        var_CLOSING=`cat $netstat_log |grep -i CLOSING|wc -l`
+        var_Foreign=`cat $netstat_log |grep -i Foreign|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT",CLOSE_WAIT=$var_CLOSE_WAIT",FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2",CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 
 function PAY_AccessIP()  {
         var_ip=`cat /opt/logs/nginx/*.access.log | grep $TimeRange | awk '{print $3}' | sort | uniq -c | sort -n | wc -l`
-        var_list=`netstat -ant |grep -i LISTEN|wc -l`
-        var_ESTABLISHED=`netstat -ant |grep -i ESTABLISHED|wc -l`
-        var_SYN_RECV=`netstat -ant |grep -i SYN_RECV|wc -l`
-        var_SYN_SENT=`netstat -ant |grep -i SYN_SENT|wc -l`
-        var_TIME_WAIT=`netstat -ant |grep -i TIME_WAIT|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT" | nc 61.216.144.184 -u 514 -w 1
+        var_list=`cat $netstat_log |grep -i LISTEN|wc -l`
+        var_ESTABLISHED=`cat $netstat_log |grep -i ESTABLISHED|wc -l`
+        var_SYN_RECV=`cat $netstat_log |grep -i SYN_RECV|wc -l`
+        var_SYN_SENT=`cat $netstat_log |grep -i SYN_SENT|wc -l`
+        var_TIME_WAIT=`cat $netstat_log |grep -i TIME_WAIT|wc -l`
+        var_CLOSE_WAIT=`cat $netstat_log |grep -i CLOSE_WAIT|wc -l`
+        var_FIN_WAIT1=`cat $netstat_log |grep -i FIN_WAIT1|wc -l`
+        var_FIN_WAIT2=`cat $netstat_log |grep -i FIN_WAIT2|wc -l`
+        var_CLOSING=`cat $netstat_log |grep -i CLOSING|wc -l`
+        var_Foreign=`cat $netstat_log |grep -i Foreign|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT",CLOSE_WAIT=$var_CLOSE_WAIT",FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2",CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 $Envir"_AccessIP"
