@@ -29,7 +29,8 @@ Total=`ls /opt/logs/nginx/*.access.log | wc -l`
 		var_FIN_WAIT2=`netstat -ant |grep -i FIN_WAIT2|wc -l`
 		var_CLOSING=`netstat -ant |grep -i CLOSING|wc -l`
 		var_Foreign=`netstat -ant |grep -i Foreign|wc -l`
-echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
+		var_LAST_ACK=`netstat -ant |grep -i LAST_ACK|wc -l`
+echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,LAST_ACK=$var_LAST_ACK,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
 rm -rf /tmp/AccessIPList
 }
 
@@ -45,7 +46,8 @@ function BE_AccessIP()  {
         var_FIN_WAIT2=`netstat -ant |grep -i FIN_WAIT2|wc -l`
         var_CLOSING=`netstat -ant |grep -i CLOSING|wc -l`
         var_Foreign=`netstat -ant |grep -i Foreign|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
+	var_LAST_ACK=`netstat -ant |grep -i LAST_ACK|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,LAST_ACK=$var_LAST_ACK,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 
 function FE_AccessIP()  {
@@ -60,7 +62,8 @@ function FE_AccessIP()  {
         var_FIN_WAIT2=`netstat -ant |grep -i FIN_WAIT2|wc -l`
         var_CLOSING=`netstat -ant |grep -i CLOSING|wc -l`
         var_Foreign=`netstat -ant |grep -i Foreign|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
+	var_LAST_ACK=`netstat -ant |grep -i LAST_ACK|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,LAST_ACK=$var_LAST_ACK,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 
 function PAY_AccessIP()  {
@@ -75,6 +78,7 @@ function PAY_AccessIP()  {
         var_FIN_WAIT2=`netstat -ant |grep -i FIN_WAIT2|wc -l`
         var_CLOSING=`netstat -ant |grep -i CLOSING|wc -l`
         var_Foreign=`netstat -ant |grep -i Foreign|wc -l`
-        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
+	var_LAST_ACK=`netstat -ant |grep -i LAST_ACK|wc -l`
+        echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,LAST_ACK=$var_LAST_ACK,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign" | nc 61.216.144.184 -u 514 -w 1
         }
 $Envir"_AccessIP"
