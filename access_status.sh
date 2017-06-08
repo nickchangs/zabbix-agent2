@@ -19,15 +19,15 @@ function APP_Status() {
 	cat /opt/logs/nginx/*-$PortNU.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
-function be_Status() {
+function BE_Status() {
         cat /opt/logs/nginx/*-https.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
-function fd_Status() {
+function FE_Status() {
         cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
-function py_Status() {
+function PAY_Status() {
         cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 $Envir"_Status"
