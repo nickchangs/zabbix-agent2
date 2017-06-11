@@ -6,8 +6,6 @@
 #請確認目前log file的大小，一定要logrotate有在執行，只存1天的LOG，其他是被壓縮起來的，不會會造成DISK I/O問題
 
 Hostname=`cat /etc/zabbix/zabbix_agentd.conf | grep Hostname= | grep -v "#"`
-logfile=
-
 		var_ip=`netstat -antu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n | wc -l`
 		var_list=`netstat -antu |grep -i LISTEN|wc -l`
 		var_ESTABLISHED=`netstat -antu |grep -i ESTABLISHED|wc -l`
