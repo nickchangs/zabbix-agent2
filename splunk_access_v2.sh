@@ -23,3 +23,4 @@ LogFile='/tmp/netstat.log'
                 #var_top_IPs=`cat $LogFile |awk ' $5 ~ /^[0-9]/ {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n10 | awk '{print $2}'| tr  '\n'  ' '`
                 var_top_ip=`cat $LogFile |awk ' $5 ~ /^[0-9]/ {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n1 | awk '{print $2}'`
 echo "Type=access,$Hostname,connections=$var_ip,LISTEN=$var_list,ESTABLISHED=$var_ESTABLISHED,SYN_RECV=$var_SYN_RECV,SYN_SENT=$var_SYN_SENT,LAST_ACK=$var_LAST_ACK,TIME_WAIT=$var_TIME_WAIT,CLOSE_WAIT=$var_CLOSE_WAIT,FIN_WAIT1=$var_FIN_WAIT1,FIN_WAIT2=$var_FIN_WAIT2,CLOSING=$var_CLOSING,Foreign=$var_Foreign,top_IP=$var_top_ip" | nc 61.216.144.184 -u 514 -w 1
+cat /tmp/netstat.log |awk ' $5 ~ /^[0-9]/ {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | awk '{print $2}' | sed -e 's/^/client=/' | sed -e "s/^/$Hostname,/" | nc 61.216.144.184 -u 514 -w 1
