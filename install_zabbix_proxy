@@ -1,0 +1,142 @@
+================安裝zabbix_proxy====================================================
+
+1.安裝MARIADB-SERVER
+yum install mariadb-server
+
+2.開機啟動及啟用
+systemctl enable mariadb
+service mariadb start
+
+3.安裝RPM關聯
+rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm
+rpm -Uvh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm
+rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/6/x86_64/zabbix-release-3.2-1.el6.noarch.rpm
+4.安裝程式
+yum install zabbix-proxy-mysql
+
+如失敗使用下面的方式安裝
+
+yum install OpenIPMI-libs OpenIPMI-modalias fping libtool-ltdl net-snmp-libs unixODBC
+	
+rpm -Uvh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-agent-3.2.6-1.el7.x86_64.rpm
+
+5.設定開機啟動
+systemctl enable zabbix-proxy
+systemctl enable zabbix-agent
+
+6.設定proxy參數
+vi /etc/zabbix/zabbix_proxy.conf
+server=61.216.144.184
+Hostname=JS(Proxies Name)
+DBHost=localhost
+DBPassword=zabbix
+
+7.設定mariadb-server
+mysql -u root -p 
+   mysql> create database zabbix_proxy character set utf8 collate utf8_bin;
+   mysql> grant all privileges on zabbix_proxy.* to zabbix@localhost identified by 'zabbix';
+   mysql> quit
+   
+zcat /usr/share/doc/zabbix-proxy-mysql-3.2.6/schema.sql.gz | mysql -uroot zabbix_proxy  (河北、山東、北京
+
+
+6.前往Zabbix Server設定Proxies
+新增設定相同的HostName
+
+7.啟用zabbix-proxy
+service zabbix-proxy start
+
+如出現以下，請關閉SELINUX後重開機
+Job for zabbix-proxy.service failed because a configured resource limit was exceeded. See "systemctl status zabbix-proxy.service" and "journalctl -xe" for details.
+
+8.確認LOG是否正常
+tail /var/log/zabbix/zabbix_proxy.log
+
+9.設定zabbix-agent
+vi /etc/zabbix/zabbix_agentd.conf
+Server=117.21.191.101 (本地IP) 61.216.144.186
+ServerActive=117.21.191.101:10051 (本地IP) 61.216.144.184
+Hostname=Changsha_WebMonitor (於Zabbix Server上設定的HOSTNAME)
+
+10.啟用Agent服務
+service zabbix-agent start
+
+11.確認LOG是否正常
+tail /var/log/zabbix/zabbix_agentd.log
+
+
+12.解決Selinux啟用無法啟用ZABBIX-AGENT
+
+setenforce 0
+
+================安裝zabbix_proxy====================================================
+
+===============VPS IPTABLE LIST============================
+
+# Firewall configuration written by system-config-firewall
+# Manual customization of this file is not recommended.
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -s 61.216.144.186/32 -j ACCEPT
+-A INPUT -s 61.216.144.184/32 -j ACCEPT
+-A INPUT -s 58.218.198.140/32 -j ACCEPT
+-A INPUT -s 121.201.126.154/32 -j ACCEPT
+-A INPUT -s 218.65.131.23/32 -j ACCEPT
+-A INPUT -s 121.18.238.84/32 -j ACCEPT
+-A INPUT -s 125.211.218.83/32 -j ACCEPT
+-A INPUT -s 122.228.244.207/32 -j ACCEPT
+-A INPUT -s 123.249.34.189/32 -j ACCEPT
+-A INPUT -s 117.21.191.101/32 -j ACCEPT
+-A INPUT -s 119.90.126.103/32 -j ACCEPT
+-A INPUT -s 124.232.137.43/32 -j ACCEPT
+-A INPUT -s 118.123.243.214/32 -j ACCEPT
+-A INPUT -s 27.221.52.39/32 -j ACCEPT
+-A INPUT -s 221.181.73.38/32 -j ACCEPT
+-A INPUT -s 60.169.77.177/32 -j ACCEPT
+-A INPUT -s 59.45.175.118/32 -j ACCEPT
+-A INPUT -s 202.111.175.61/32 -j ACCEPT
+-A INPUT -s 219.153.49.198/32 -j ACCEPT
+-A INPUT -s 219.138.135.102/32 -j ACCEPT
+-A INPUT -s 125.211.222.160/32 -j ACCEPT
+-A INPUT -s 111.161.65.109/32 -j ACCEPT
+-A INPUT -s 117.34.109.53/32 -j ACCEPT
+-A INPUT -s 124.164.232.146/32 -j ACCEPT
+-A INPUT -s 222.88.94.206/32 -j ACCEPT
+-A INPUT -s 1.162.210.176/32 -j ACCEPT
+-A INPUT -s 218.85.133.210/32 -j ACCEPT
+-A INPUT -s 127.0.0.1/32 -j ACCEPT
+-A INPUT -m conntrack -j ACCEPT  --ctstate RELATED,ESTABLISHED
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -j DROP
+-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A FORWARD -j DROP
+COMMIT
+
+===============VPS IPTABLE LIST============================
+
+
+====本地端dns服務安裝設定==========================
+
+cp /etc/resolv.conf /etc/resolv.dnsmasq.conf
+
+cp /etc/hosts /etc/dnsmasq.hosts
+
+cp /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+
+echo 'resolv-file=/etc/resolv.dnsmasq.conf' >> /etc/dnsmasq.conf
+echo 'addn-hosts=/etc/dnsmasq.hosts' >> /etc/dnsmasq.conf
+echo 'cache-size=1000' >> /etc/dnsmasq.conf
+echo 'nameserver 127.0.0.1' > /etc/resolv.conf
+
+service dnsmasq start
+systemctl enable dnsmasq
+
+chkconfig dnsmasq on 
+
+netstat -tunlp|grep 53
+
+dig www.google.com.tw
+
+====本地端dns服務安裝設定==========================
