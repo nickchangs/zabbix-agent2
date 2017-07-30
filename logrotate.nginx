@@ -1,0 +1,15 @@
+/opt/logs/nginx/*.log {
+daily
+create 644 ngUseX ngUseX
+rotate 7
+dateext
+dateformat -%Y-%m-%d
+missingok
+notifempty
+compress
+sharedscripts
+postrotate
+  if [ -f  /var/run/nginx.pid ];then
+     kill -USR1 `cat /var/run/nginx.pid`
+  fi
+endscript
