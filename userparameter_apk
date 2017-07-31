@@ -1,1 +1,2 @@
-
+UserParameter=url.code[*],(curl -s -o /dev/null -I -w "%{http_code}" "$1")
+UserParameter=url.time[*],(curl -s -o /dev/null -I -w "%{time_total}" "$1")
