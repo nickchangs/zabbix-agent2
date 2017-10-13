@@ -6,7 +6,7 @@
       
       echo "TLSConnect=psk" >> /etc/zabbix/zabbix_agentd.conf  
       
-      echo "TLSAccept=psk" >> /etc/zabbix/zabbix_agentd.conf
+      echo "TLSAccept=psk" >> /etc/zabbix/zabbix_agentd.conf  
  
       echo "TLSPSKFile=/etc/zabbix/zabbix_agentd.psk" >> /etc/zabbix/zabbix_agentd.conf  
  
