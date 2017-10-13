@@ -37,3 +37,14 @@ chmod +x /etc/zabbix/*.sh
 echo Hostname=$NewName >> /etc/zabbix/zabbix_agentd.conf
 systemctl enable zabbix-agent
 service zabbix-agent restart
+
+#安裝salt-stack自動化工具
+yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm -y
+yum install salt-minion -y
+chkconfig salt-minion on
+service salt-minion start
+echo "032-cp1-pay-01" > /etc/salt/minion_id
+echo "master: 61.216.144.184" >> /etc/salt/minion
+echo "tcp_keepalive: True" >> /etc/salt/minion
+echo "tcp_keepalive_idle: 60" >> /etc/salt/minion
+service salt-minion restart
