@@ -43,7 +43,7 @@
 
     APP:  
     curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_app_start.sh -o "/root/ma_app_start.sh"  
-    curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_app_stop.sh -o "/root/ma_app_stop.sh"  
+    curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_app_stop.sh -o "/root/ma_app_stop.sh"    
     前台：  
     curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_fe_start.sh -o "/root/ma_fe_start.sh"  
     curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_fe_stop.sh -o "/root/ma_fe_stop.sh"  
