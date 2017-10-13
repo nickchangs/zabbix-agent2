@@ -35,7 +35,7 @@
 
       yum install -y nc
 
-      echo "* * * * * sh /etc/zabbix/splunk_access.sh" > /var/spool/cron/root
+      echo "*/5 * * * * sh /etc/zabbix/splunk_access.sh" > /var/spool/cron/root
 
 1.5 安裝salt-minion自動化工具
 
