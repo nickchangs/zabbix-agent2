@@ -4,7 +4,6 @@
 1.2 Agent加密設定  
 
     請一次將一個品牌的xshell同時打開，再設定送命令到所有視窗方式，將以下設定貼到rp的cli執行  
-      
     echo "TLSConnect=psk" >> /etc/zabbix/zabbix_agentd.conf  
       
     echo "TLSAccept=psk" >> /etc/zabbix/zabbix_agentd.conf  
