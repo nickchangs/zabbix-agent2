@@ -42,6 +42,8 @@
 1.6 新增ma維護程式
 
     APP:  
+    mkdir /opt/APP/openresty/nginx/conf/ma  
+    curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma-APP.conf -o "/opt/APP/openresty/nginx/conf/ma/ma.conf"  
     curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_app_start.sh -o "/root/ma_app_start.sh"  
     curl -s https://raw.githubusercontent.com/nickchangs/ma/master/ma_app_stop.sh -o "/root/ma_app_stop.sh"  
     前台：  
