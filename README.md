@@ -9,7 +9,6 @@
     echo "TLSPSKFile=/etc/zabbix/zabbix_agentd.psk" >> /etc/zabbix/zabbix_agentd.conf  
     echo "TLSPSKIdentity=PSK 001" >> /etc/zabbix/zabbix_agentd.conf  
     curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/zabbix_agentd.psk -o "/etc/zabbix/zabbix_agentd.psk" 
-    curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_nginx -o "/etc/zabbix/zabbix_agentd.d/userparameter_nginx.conf"  
     service zabbix-agent restart  
     最後進入zabbix ui內，選config ==> host ==> 選一個品牌的group ==>全選 ==> MASS UPDATE ==> 選加密 (encr…) ==>全選psk ==> PSK 001 ==> zabbix_agentd.psk裡面的key  
     可以參考如下連結https://www.zabbix.com/documentation/3.2/manual/encryption/using_pre_shared_keys  
@@ -17,6 +16,7 @@
 1.3 新增Zabbix Agent Userparameter
 
     curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_ip.conf -o "/etc/zabbix/zabbix_agentd.d/userparameter_ip.conf"  
+    curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_nginx -o "/etc/zabbix/zabbix_agentd.d/userparameter_nginx.conf"  
     curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/connections.sh -o "/etc/zabbix/connections.sh"  
     service zabbix-agent restart  
     於Templete OS Linux Active 新增item 及 trigger  
