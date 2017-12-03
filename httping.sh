@@ -1,9 +1,9 @@
 #!/bin/bash  
 metric=$1  
-url=$2  
+host=$2  
 port=$3  
 proto=$4  
-tmp_file=/tmp/httping/${host}_${metric}_httping_status.txt  
+tmp_file=/tmp/${metric}_httping_status.txt  
 if [ $proto == "https" ];then  
 /bin/httping -c5 -t3 -l $url > $tmp_file 
 #/bin/httping -c5 -t3 -l $proto://$host:$port > $tmp_file  
@@ -62,7 +62,7 @@ if [ $proto == "https" ];then
         echo -e "\e[033mUsage: sh  $0 [status|failed|min|avg|max]\e[0m"  
        esac  
 elif [ $proto == "http" ];then  
-    /bin/httping -c5 -t3  $url > $tmp_file  
+    /bin/httping -c5 -t3 $proto://$host:$port > $tmp_file  
     case $metric in  
             status)  
         output=$(cat $tmp_file |grep connected |wc -l )  
