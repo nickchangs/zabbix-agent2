@@ -118,5 +118,5 @@ elif [ $proto == "http" ];then
         echo -e "\e[033mUsage: sh  $0 [status|failed|min|avg|max]\e[0m"  
        esac  
 else  
-    echo "error parm " $proto >/tmp/httping/error.log  
+    echo "error parm " $proto >/tmp/httping_error.log  
  fi 
