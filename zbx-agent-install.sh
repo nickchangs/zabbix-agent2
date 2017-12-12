@@ -17,6 +17,7 @@ sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 #加入config及scipt文件
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/ngx_status.sh -o "/etc/zabbix/ngx_status.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/connections.sh -o "/etc/zabbix/connections.sh"
+curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/httping.sh -o "/etc/zabbix/httping.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/access_status.sh -o "/etc/zabbix/access_status.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/splunk_access_v2.sh -o "/etc/zabbix/splunk_access.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/splunk_netstat.sh -o "/etc/zabbix/splunk_netstat.sh"
@@ -25,6 +26,7 @@ curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/zabbix
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_nginx -o "/etc/zabbix/zabbix_agentd.d/userparameter_nginx.conf"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/zabbix_agentd.psk -o "/etc/zabbix/zabbix_agentd.psk"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_ip.conf -o "/etc/zabbix/zabbix_agentd.d/userparameter_ip.conf"
+curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_httping.conf -o "/etc/zabbix/zabbix_agentd.d/userparameter_httping.conf"
 chmod +x /etc/zabbix/*.sh
 
 #新增開機服務
