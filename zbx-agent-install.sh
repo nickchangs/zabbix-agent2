@@ -1,16 +1,20 @@
 #!/bin/bash
-read -p "Input hostname you want to change : " NewName
 
+#刪除舊的文件檔
 rm -rf /etc/zabbix/*.sh*
 rm -rf /etc/zabbix/*.conf*
 rm -rf /etc/zabbix/zabbix_agentd.d/*.conf
+
+#安裝zabbix工具及程式
 yum install net-tools bind-utils wget nc -y
 rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-agent-3.4.4-2.el7.x86_64.rpm
 chkconfig zabbix-agent on
 
+#取消selinux功能
 setenforce 0
 sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
+#加入config及scipt文件
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/ngx_status.sh -o "/etc/zabbix/ngx_status.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/connections.sh -o "/etc/zabbix/connections.sh"
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/access_status.sh -o "/etc/zabbix/access_status.sh"
@@ -23,28 +27,25 @@ curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/zabbix
 curl -s https://raw.githubusercontent.com/nickchangs/zabbix-agent2/master/userparameter_ip.conf -o "/etc/zabbix/zabbix_agentd.d/userparameter_ip.conf"
 chmod +x /etc/zabbix/*.sh
 
-#if Agent is passive mode
-#sed -i "s/Server=127.0.0.1/Server=61.216.144.186/g" /etc/zabbix/zabbix_agentd.conf
-#sed -i "s/# ListenPort=10050/ListenPort=9345/g" /etc/zabbix/zabbix_agentd.conf
-
-#if Agent is active mode
-#sed -i "s/ServerActive=127.0.0.1/ServerActive=61.216.144.184:10051/g" /etc/zabbix/zabbix_agentd.conf
-#echo "StartAgents=0"  >> /etc/zabbix/zabbix_agentd.conf
-#echo "RefreshActiveChecks=60" >> /etc/zabbix/zabbix_agentd.conf
-#echo "UserParameter=nginx.status[*],/etc/zabbix/ngx_status.sh \$1" >> /etc/zabbix/zabbix_agentd.conf
-#echo "UserParameter=netstat.stat[*],(netstat -ant |grep -i $1|wc -l)" >> /etc/zabbix/zabbix_agentd.conf
-#echo "UserParameter=access.status[*],/etc/zabbix/access_status.sh \$1" >> /etc/zabbix/zabbix_agentd.conf
-echo Hostname=$NewName >> /etc/zabbix/zabbix_agentd.conf
+#新增開機服務
 systemctl enable zabbix-agent
 service zabbix-agent restart
 
 #安裝salt-stack自動化工具
 yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.rpm -y
 yum install salt-minion -y
-chkconfig salt-minion on
+systemctl enable salt-minion
 service salt-minion start
-echo "$NewName" > /etc/salt/minion_id
+
+#手動輸入Salt HostName 品牌代號_品牌名稱_服務類型_序號
+echo 001_500vip_app_01 > /etc/salt/minion_id
+
+#新增Salt-minion設定檔
 echo "master: 61.216.144.184" >> /etc/salt/minion
 echo "tcp_keepalive: True" >> /etc/salt/minion
 echo "tcp_keepalive_idle: 60" >> /etc/salt/minion
 service salt-minion restart
+
+#排程splunk
+echo '* * * * * sh /etc/zabbix/splunk_access.sh' >> /var/spool/cron/root
+
