@@ -5,7 +5,7 @@ rm -rf /etc/zabbix/*.sh*
 rm -rf /etc/zabbix/*.conf*
 rm -rf /etc/zabbix/zabbix_agentd.d/*.conf
 yum install net-tools bind-utils wget nc -y
-rpm -Uvh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-agent-3.2.6-1.el7.x86_64.rpm
+rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-agent-3.4.4-2.el7.x86_64.rpm
 chkconfig zabbix-agent on
 
 setenforce 0
@@ -43,7 +43,7 @@ yum install https://repo.saltstack.com/yum/redhat/salt-repo-latest-2.el7.noarch.
 yum install salt-minion -y
 chkconfig salt-minion on
 service salt-minion start
-echo "032-cp1-pay-01" > /etc/salt/minion_id
+echo "$NewName" > /etc/salt/minion_id
 echo "master: 61.216.144.184" >> /etc/salt/minion
 echo "tcp_keepalive: True" >> /etc/salt/minion
 echo "tcp_keepalive_idle: 60" >> /etc/salt/minion
