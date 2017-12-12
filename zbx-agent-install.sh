@@ -49,5 +49,5 @@ echo "tcp_keepalive_idle: 60" >> /etc/salt/minion
 service salt-minion restart
 
 #排程splunk
-echo '* * * * * sh /etc/zabbix/splunk_access.sh' >> /var/spool/cron/root
+echo '*/5 * * * * sh /etc/zabbix/splunk_access.sh' >> /var/spool/cron/root
 
