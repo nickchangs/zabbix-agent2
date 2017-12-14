@@ -3,14 +3,15 @@
 metric=$1  
 host=$2  
 #port=$3  
-#proto=$4  
-tmp_file=/tmp/${metric}_httping_status.txt  
+proto=`echo $host | awk -F'://' '{print $1}'`
+#tmp_file=/tmp/${metric}_httping_status.txt  
 
-#if [[ $proto == "https" ]];then  
+if [[ $proto == "https" ]];then  
 #/bin/httping -c5 -t3 -l $proto://$host:$port > $tmp_file  
+#echo $proto
     case $metric in  
         status)
-        output=`/usr/bin/httping -f -c5 -t3 $host |grep connected |wc -l`
+        output=`/usr/bin/httping -f -c5 -t3 -l $host |grep connected |wc -l`
         #output=$(cat $tmp_file |grep connected |wc -l )
         if [ $output -eq 3 ];then  
          output=1  
@@ -21,7 +22,7 @@ tmp_file=/tmp/${metric}_httping_status.txt
         fi  
         ;;  
         failed)  
-            output=`/usr/bin/httping -f -c5 -t3 $host |grep failed|awk '{print $5}'|awk -F'%' '{print $1}'`
+            output=`/usr/bin/httping -f -c5 -t3 -l $host |grep failed|awk '{print $5}'|awk -F'%' '{print $1}'`
             if [ "$output" == "" ];then  
              echo 100  
           else  
@@ -29,7 +30,7 @@ tmp_file=/tmp/${metric}_httping_status.txt
           fi  
             ;;  
         min)  
-          output=`/usr/bin/httping -f -c5 -t3 $host |grep min|awk '{print $4}'|awk -F/ '{print $1}'`
+          output=`/usr/bin/httping -f -c5 -t3 -l $host |grep min|awk '{print $4}'|awk -F/ '{print $1}'`
           if [ "$output" == "" ];then  
              echo 0  
           else  
@@ -37,7 +38,7 @@ tmp_file=/tmp/${metric}_httping_status.txt
           fi  
         ;;  
         avg)  
-            output=`/usr/bin/httping -f -c5 -t3 $host |grep avg|awk '{print $4}'|awk -F/ '{print $2}'`
+            output=`/usr/bin/httping -f -c5 -t3 -l $host |grep avg|awk '{print $4}'|awk -F/ '{print $2}'`
           if [ "$output" == "" ];then  
              echo 0  
           else  
@@ -45,7 +46,7 @@ tmp_file=/tmp/${metric}_httping_status.txt
           fi  
             ;;  
         max)  
-                output=`/usr/bin/httping -f -c5 -t3 $host |grep max|awk '{print $4}'|awk -F/ '{print $3}'`
+                output=`/usr/bin/httping -f -c5 -t3 -l $host |grep max|awk '{print $4}'|awk -F/ '{print $3}'`
           if [[ "$output" == "" ]];then  
             echo 0  
           else  
@@ -53,7 +54,7 @@ tmp_file=/tmp/${metric}_httping_status.txt
           fi  
             ;;
 	loss)
-		output=`/usr/bin/httping -f -c5 -t3 $host |grep ok|awk '{print $5}' |awk -F% '{print $1}'`
+		output=`/usr/bin/httping -f -c5 -t3 -l $host |grep ok|awk '{print $5}' |awk -F% '{print $1}'`
           if [ "$output" == "" ];then
             echo 0  
           else
@@ -63,3 +64,61 @@ tmp_file=/tmp/${metric}_httping_status.txt
         *)  
         echo -e "\e[033mUsage: sh  $0 [status|failed|min|avg|max]\e[0m"  
        esac  
+else
+#echo $proto
+    case $metric in
+        status)
+        output=`/usr/bin/httping -f -c5 -t3 $host |grep connected |wc -l`
+        #output=$(cat $tmp_file |grep connected |wc -l )
+        if [ $output -eq 3 ];then
+         output=1
+        echo $output
+        else
+             output=0
+        echo $output
+        fi
+        ;;
+        failed)
+            output=`/usr/bin/httping -f -c5 -t3 $host |grep failed|awk '{print $5}'|awk -F'%' '{print $1}'`
+            if [ "$output" == "" ];then
+             echo 100
+          else
+             echo $output
+          fi
+            ;;
+        min)
+          output=`/usr/bin/httping -f -c5 -t3 $host |grep min|awk '{print $4}'|awk -F/ '{print $1}'`
+          if [ "$output" == "" ];then
+             echo 0
+          else
+             echo $output
+          fi
+        ;;
+        avg)
+            output=`/usr/bin/httping -f -c5 -t3 $host |grep avg|awk '{print $4}'|awk -F/ '{print $2}'`
+          if [ "$output" == "" ];then
+             echo 0
+          else
+             echo $output
+          fi
+            ;;
+        max)
+                output=`/usr/bin/httping -f -c5 -t3 $host |grep max|awk '{print $4}'|awk -F/ '{print $3}'`
+          if [[ "$output" == "" ]];then
+            echo 0
+          else
+             echo $output
+          fi
+            ;;
+        loss)
+                output=`/usr/bin/httping -f -c5 -t3 $host |grep ok|awk '{print $5}' |awk -F% '{print $1}'`
+          if [ "$output" == "" ];then
+            echo 0
+          else
+             echo $output
+          fi
+            ;;
+        *)
+        echo -e "\e[033mUsage: sh  $0 [status|failed|min|avg|max]\e[0m"
+       esac  
+fi
