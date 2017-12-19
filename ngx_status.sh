@@ -12,7 +12,7 @@ function failed {
 date=`date -d "1 minutes ago" | awk '{print $4}' | cut -d: -f1,2`
 cat /opt/logs/nginx/*.error.log | grep `date -d '1 minute ago' '+%H:%M'` | grep "failed" | wc -l
 }
- 检测nginx性能
+#检测nginx性能
 function active {
     /usr/bin/curl "http://$HOST/nginx_status/" 2>/dev/null| grep 'Active' | awk '{print $NF}'
 }
