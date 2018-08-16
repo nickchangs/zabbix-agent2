@@ -1,0 +1,9 @@
+/opt/logs/Fwhitelist/*.log {
+daily
+rotate 7
+dateext
+dateformat -%Y-%m-%d
+missingok
+notifempty
+compress
+}
