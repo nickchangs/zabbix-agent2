@@ -16,18 +16,18 @@ StatusCode=$SC
 PortNU=$2
 
 function APP_Status() {
-	cat /opt/logs/nginx/*-$PortNU.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
+	cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%d/%b/%Y:%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
 function BE_Status() {
-        cat /opt/logs/nginx/*-https.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
+        cat /opt/logs/nginx/*-https.access.log | grep `date -d '1 minute ago' '+%d/%b/%Y:%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
 function FE_Status() {
-        cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
+        cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%d/%b/%Y:%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
 function PAY_Status() {
-        cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
+        cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%d/%b/%Y:%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 $Envir"_Status"
