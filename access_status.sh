@@ -16,7 +16,7 @@ StatusCode=$SC
 PortNU=$2
 
 function APP_Status() {
-	cat /opt/logs/nginx/*-$PortNU.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
+	cat /opt/logs/nginx/*.access.log | grep `date -d '1 minute ago' '+%H:%M'` | grep " status=$StatusCode" | wc -l
 }
 
 function BE_Status() {
