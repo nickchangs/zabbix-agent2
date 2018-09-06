@@ -6,7 +6,7 @@ rm -rf /etc/zabbix/*.conf*
 rm -rf /etc/zabbix/zabbix_agentd.d/*.conf
 
 #安裝zabbix工具及程式
-yum install net-tools bind-utils wget nc -y
+yum install net-tools bind-utils wget nc httping -y
 rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-agent-3.4.9-1.el7.x86_64.rpm  
 chkconfig zabbix-agent on
 
