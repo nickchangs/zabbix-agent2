@@ -59,8 +59,8 @@ function check() {
 }
 
 #间隔30s无限循环检查函数
-while true; do
-  check
-  #每隔30s检查一次，时间可根据需要自定义
-  sleep 30
-done
+#while true; do
+ check
+#  #每隔30s检查一次，时间可根据需要自定义
+#  sleep 30
+#done
