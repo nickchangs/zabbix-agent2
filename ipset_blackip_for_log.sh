@@ -23,8 +23,8 @@ create_name="black_"$(date '+%Y-%m-%d')
 echo "ipset name: "$create_name
 
 #創建ipset 集合與規則
-ipset create $create_name hash:ip
-iptables -I INPUT -m set --match-set $create_name src -j DROP
+#ipset create $create_name hash:ip
+#iptables -I INPUT -m set --match-set $create_name src -j DROP
 
 #请求检查、判断及拉黑主功能函数
 function check() {
@@ -47,8 +47,8 @@ function check() {
         #        iptables -I INPUT -s $black_ip -j DROP &
         #        echo "$black_ip  $(date +%Y-%m-%d/%H:%M:%S)" >>./deny.log
         #)
-        ipset list $create_name | grep $black_ip || (
-          ipset add $create_name $black_ip timeout 43200 &
+        ipset list deny_ip | grep $black_ip || (
+          ipset add deny_ip $black_ip timeout 43200 &
           echo "$black_ip  $(date +%Y-%m-%d/%H:%M:%S)" >>./deny.log
         )
         sleep 1
