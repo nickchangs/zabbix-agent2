@@ -48,7 +48,7 @@ function check() {
         #        echo "$black_ip  $(date +%Y-%m-%d/%H:%M:%S)" >>./deny.log
         #)
         ipset list $create_name | grep $black_ip || (
-          ipset add $create_name $black_ip &
+          ipset add $create_name $black_ip timeout 43200 &
           echo "$black_ip  $(date +%Y-%m-%d/%H:%M:%S)" >>./deny.log
         )
         sleep 1
